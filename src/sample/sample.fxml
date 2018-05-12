@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+    <children>
+        <TabPane fx:id="tabs" layoutX="172.0" prefHeight="720.0" prefWidth="1109.0" tabClosingPolicy="UNAVAILABLE">
+            <tabs>
+                <Tab fx:id="itemsTab" text="All Items">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <TableView fx:id="itemsTable" layoutY="6.0" prefHeight="687.0" prefWidth="1118.0">
+                                    <columns>
+                                        <TableColumn fx:id="articleCol" prefWidth="150.99996948242188" text="Article" />
+                                        <TableColumn fx:id="nameCol" prefWidth="395.0" text="Name" />
+                                        <TableColumn fx:id="typeCol" prefWidth="283.0" text="Type" />
+                                        <TableColumn fx:id="priceCol" prefWidth="167.0" text="Price" />
+                                        <TableColumn fx:id="quantityCol" prefWidth="121.0" text="Quantity" />
+                                    </columns>
+                                </TableView>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab fx:id="micTab" text="Microphones">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <TableView fx:id="micTable" layoutY="6.0" prefHeight="687.0" prefWidth="1118.0">
+                                    <columns>
+                                        <TableColumn fx:id="micArticleCol" prefWidth="150.99996948242188" text="Article" />
+                                        <TableColumn fx:id="micBrandCol" prefWidth="214.0" text="Brand" />
+                                        <TableColumn fx:id="micModelCol" prefWidth="183.0" text="Model" />
+                                        <TableColumn fx:id="micTypeCol" prefWidth="177.0" text="Type" />
+                              <TableColumn fx:id="micUseCol" prefWidth="151.0" text="Use" />
+                                        <TableColumn fx:id="micPriceCol" minWidth="0.0" prefWidth="119.0" text="Price" />
+                              <TableColumn fx:id="micQuantityCol" prefWidth="148.0" text="Quantity" />
+                                    </columns>
+                                </TableView>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+            <Tab fx:id="guitarTab" text="Guitars">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="guitarTable" layoutY="6.0" prefHeight="687.0" prefWidth="1118.0">
+                           <columns>
+                              <TableColumn fx:id="guitarArticleCol" prefWidth="128.99996948242188" text="Article" />
+                              <TableColumn fx:id="guitarBrandCol" prefWidth="129.0" text="Brand" />
+                              <TableColumn fx:id="guitarModelCol" prefWidth="165.0" text="Model" />
+                              <TableColumn fx:id="guitarTypeCol" prefWidth="121.0" text="Type" />
+                              <TableColumn fx:id="guitarStringNumberCol" prefWidth="102.0" text="String Number" />
+                              <TableColumn fx:id="guitarFretMatCol" minWidth="0.0" prefWidth="164.0" text="Fretboard Material" />
+                              <TableColumn fx:id="guitarFretNumberCol" minWidth="0.0" prefWidth="99.0" text="Fret Number" />
+                              <TableColumn fx:id="guitarPriceCol" minWidth="0.0" prefWidth="96.0" text="Price" />
+                              <TableColumn fx:id="guitarQuantityCol" prefWidth="153.0" text="Quantity" />
+                           </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab fx:id="synthTab" text="Synths">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="synthTable" layoutY="6.0" prefHeight="687.0" prefWidth="1118.0">
+                           <columns>
+                              <TableColumn fx:id="synthArticleCol" prefWidth="128.99996948242188" text="Article" />
+                              <TableColumn fx:id="synthBrandCol" prefWidth="171.0" text="Brand" />
+                              <TableColumn fx:id="synthModelCol" prefWidth="223.0" text="Model" />
+                              <TableColumn fx:id="synthKeysNumberCol" prefWidth="175.0" text="Keys Number" />
+                              <TableColumn fx:id="synthPresetNumberCol" minWidth="0.0" prefWidth="119.0" text="Preset Number" />
+                              <TableColumn fx:id="synthPriceCol" prefWidth="167.0" text="Price" />
+                              <TableColumn fx:id="synthQuantityCol" prefWidth="133.0" text="Quantity" />
+                           </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab fx:id="musicTab" text="Music">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="musicTable" layoutY="6.0" prefHeight="687.0" prefWidth="1118.0">
+                           <columns>
+                              <TableColumn fx:id="musicArticleCol" prefWidth="102.99996948242188" text="Article" />
+                              <TableColumn fx:id="musicMediaTypeCol" prefWidth="145.0" text="Media Type" />
+                              <TableColumn fx:id="musicArtistCol" prefWidth="175.0" text="Artist" />
+                              <TableColumn fx:id="musicAlbumCol" prefWidth="121.0" text="Album Name" />
+                              <TableColumn fx:id="musicTypeCol" prefWidth="171.0" text="Type" />
+                              <TableColumn fx:id="musicReleaseDateCol" minWidth="0.0" prefWidth="161.0" text="Release Date" />
+                              <TableColumn fx:id="musicPriceCol" prefWidth="124.0" text="Price" />
+                              <TableColumn fx:id="musicQuantityCol" prefWidth="117.0" text="Quantity" />
+                           </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            </tabs>
+        </TabPane>
+        <VBox prefHeight="128.0" prefWidth="163.0">
+            <children>
+                <Label alignment="CENTER" prefHeight="28.0" prefWidth="163.0" text="Add Item" textAlignment="CENTER" />
+                <ChoiceBox fx:id="typeIn" prefHeight="25.0" prefWidth="167.0" />
+                <TextField fx:id="articleIn" promptText="Article" />
+                <TextField fx:id="priceIn" promptText="Price" />
+                <TextField fx:id="quantityIn" promptText="Quantity" />
+            </children>
+        </VBox>
+      <VBox fx:id="vBox" layoutY="128.0" prefHeight="232.0" prefWidth="163.0" />
+      <VBox layoutY="360.0" prefHeight="359.0" prefWidth="163.0">
+         <children>
+             <Button mnemonicParsing="false" onAction="#addItem" prefHeight="25.0" prefWidth="164.0" text="Add Item" />
+            <Button fx:id="editButton" mnemonicParsing="false" onAction="#loadItemData" prefHeight="25.0" prefWidth="164.0" text="Edit" />
+            <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#loadItemData" prefHeight="25.0" prefWidth="164.0" text="Delete" />
+                <Button mnemonicParsing="false" onAction="#loadItemData" prefHeight="25.0" prefWidth="164.0" text="Load Data" />
+         </children>
+      </VBox>
+    </children>
+</AnchorPane>
