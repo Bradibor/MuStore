@@ -127,7 +127,7 @@
          <children>
              <Button mnemonicParsing="false" onAction="#addItem" prefHeight="25.0" prefWidth="164.0" text="Add Item" />
             <Button fx:id="editButton" mnemonicParsing="false" onAction="#loadItemData" prefHeight="25.0" prefWidth="164.0" text="Edit" />
-            <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#loadItemData" prefHeight="25.0" prefWidth="164.0" text="Delete" />
+            <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteItem" prefHeight="25.0" prefWidth="164.0" text="Delete" />
                 <Button mnemonicParsing="false" onAction="#loadItemData" prefHeight="25.0" prefWidth="164.0" text="Load Data" />
          </children>
       </VBox>

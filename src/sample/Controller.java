@@ -4,11 +4,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -20,10 +16,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Observable;
-import java.util.ResourceBundle;
-import java.util.StringJoiner;
+import java.util.*;
 
 
 public class Controller implements Initializable {
@@ -176,35 +169,59 @@ public class Controller implements Initializable {
     @FXML
     private TableColumn<MusicData, Integer> musicQuantityCol;
 
+    private TableView currentTable;
+
     private dbConnection db;
 
     private ObservableList<ItemData> data;
+    private ObservableList<ItemData> selectedData;
 
     private ObservableList<MicData> micData;
+    private ObservableList<MicData> selectedMicData;
 
     private ObservableList<GuitarData> guitarData;
+    private ObservableList<GuitarData> selectedGuitarData;
 
     private ObservableList<SynthData> synthData;
+    private ObservableList<SynthData> selectedSynthData;
 
     private ObservableList<MusicData> musicData;
+    private ObservableList<MusicData> selectedMusicData;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         db = new dbConnection();
+        currentTable = itemsTable;
         tabs.getSelectionModel().selectedItemProperty().addListener(
                 new ChangeListener<Tab>() {
                     @Override
                     public void changed(ObservableValue<? extends Tab> ov, Tab t, Tab t1) {
                         String tabId = t1.getId();
-                        if(tabId.equals("itemsTab")) loadItemData();
-                        else if(tabId.equals("micTab")) loadMicData();
-                        else if(tabId.equals("guitarTab")) loadGuitarData();
-                        else if(tabId.equals("synthTab")) loadSynthData();
-                        else if(tabId.equals("musicTab")) loadMusicData();
+                        if(tabId.equals("itemsTab")) {
+                            loadItemData();
+                            currentTable = itemsTable;
+                        }
+                        else if(tabId.equals("micTab")) {
+                            loadMicData();
+                            currentTable = micTable;
+                        }
+                        else if(tabId.equals("guitarTab")) {
+                            loadGuitarData();
+                            currentTable = guitarTable;
+                        }
+                        else if(tabId.equals("synthTab")) {
+                            loadSynthData();
+                            currentTable = synthTable;
+                        }
+                        else if(tabId.equals("musicTab")) {
+                            loadMusicData();
+                            currentTable = musicTable;
+                        }
 
                     }
                 }
         );
+
         final ObservableList<String> typeList = FXCollections.observableArrayList();
         typeList.add("Microphone");
         typeList.add("Guitar");
@@ -222,6 +239,7 @@ public class Controller implements Initializable {
                             vBox.getChildren().setAll(
                                 additional1,additional2, additional3, additional4
                             );
+
                         } else if(t1.equals("Guitar")) {
                                 additional1 =  new TextField(){{setPromptText("Brand");}};
                                 additional2 =  new TextField(){{setPromptText("Model");}};
@@ -255,16 +273,20 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    private void loadItemData() { ;
+    private void loadItemData() {
+        String type = null;
         try {
             Connection conn = dbConnection.getConnection();
             this.data = FXCollections.observableArrayList();
             ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM ITEM");
             while (rs.next()) {
-                String type = rs.getString("type");
+                type = rs.getString("type");
                 String name;
                 String article = rs.getString("article");
-                if (type.equals("music")) {
+                if(type == null || type.equals("")){
+                    System.out.println("null");
+                    name = "";
+                }else if (type.equals("music")) {
                     ResultSet subResult = conn.createStatement().executeQuery("SELECT * FROM MUSIC WHERE ARTICLE = " + article);
                     subResult.next();
                     name = subResult.getString("artist") + " - " + subResult.getString("album_name");
@@ -276,7 +298,8 @@ public class Controller implements Initializable {
                 this.data.add(new ItemData(article, type, rs.getFloat("price"), rs.getInt("quantity"), name));
             }
         } catch (SQLException e) {
-            System.err.println("Error" + e);
+            e.printStackTrace();
+            System.err.println("Error" + e + "Type: " + type);
         }
         this.articleCol.setCellValueFactory(new PropertyValueFactory<ItemData, String>("article"));
         this.nameCol.setCellValueFactory(new PropertyValueFactory<ItemData, String>("name"));
@@ -429,30 +452,109 @@ public class Controller implements Initializable {
     private void addItem(ActionEvent event) {
         System.out.println(typeIn.getValue());
         String type = (String) typeIn.getValue();
-        String addSql = "";
+        String addSql = null;
         String addItemSql;
         StringJoiner stringJoiner = new StringJoiner(",", "(",")");
-        if(type.equals("Microphone")){
+        if(type == null) {
+
+        }else if(type.equals("Microphone")){
+                type = "micro";
                 stringJoiner.add(articleIn.getText());
                 stringJoiner.add(additional1.getText());
                 stringJoiner.add(additional2.getText());
                 stringJoiner.add(additional3.getText());
-                stringJoiner.add(additional4.getText());
-            addSql = "INSERT INTO MICRO (article, brand, model, type, use) " +
+//                stringJoiner.add(additional4.getText());
+            addSql = "INSERT INTO MICRO (article, brand, model, type) " +
                     "VALUES " + stringJoiner.toString() + ";";
-            System.out.println(addSql);
+        } else if(type.equals("Guitar")) {
+            stringJoiner.add(articleIn.getText());
+            stringJoiner.add(additional1.getText());
+            stringJoiner.add(additional2.getText());
+            stringJoiner.add(additional3.getText());
+            stringJoiner.add(additional4.getText());
+            stringJoiner.add(additional5.getText());
+            stringJoiner.add(additional6.getText());
+
+            addSql = "INSERT INTO GUITAR (article, brand, model, type, string_number, fretboard_material, fret_number) " +
+                    "VALUES " + stringJoiner.toString() + ";";
+        } else if(type.equals("Synth")) {
+            stringJoiner.add(articleIn.getText());
+            stringJoiner.add(additional1.getText());
+            stringJoiner.add(additional2.getText());
+            stringJoiner.add(additional3.getText());
+            stringJoiner.add(additional4.getText());
+            addSql = "INSERT INTO SYNTH (article, brand, model, Keys_number, preset_number) " +
+                    "VALUES " + stringJoiner.toString() + ";";
+        } else if(type.equals("Music")) {
+            stringJoiner.add(articleIn.getText());
+            stringJoiner.add(additional1.getText());
+            stringJoiner.add(additional2.getText());
+            stringJoiner.add(additional3.getText());
+            stringJoiner.add(additional4.getText());
+            stringJoiner.add(additional5.getText());
+            addSql = "INSERT INTO SYNTH (article, brand, model, Keys_number, preset_number) " +
+                    "VALUES " + stringJoiner.toString() + ";";
         }
         stringJoiner = new StringJoiner(",", "(", ")");
         stringJoiner.add(articleIn.getText());
         stringJoiner.add(quantityIn.getText());
         stringJoiner.add(priceIn.getText());
-        addItemSql = "INSER INTO ITEM (article, quantity, price)" + stringJoiner.toString() + ";";
+        if(type != null) {
+            stringJoiner.add("'"+type.toLowerCase()+"'");
+            addItemSql = "INSERT INTO ITEM (article, quantity, price, type) VALUES " + stringJoiner.toString() + ";";
+        }else{
+            addItemSql = "INSERT INTO ITEM (article, quantity, price) VALUES " + stringJoiner.toString() + ";";
+        }
+        System.out.println(addItemSql);
+        System.out.println(addSql);
         try {
             Connection conn = dbConnection.getConnection();
-            conn.createStatement().execute(addSql);
             conn.createStatement().execute(addItemSql);
+            if(addSql != null) conn.createStatement().execute(addSql);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    private void deleteItem(){
+        List selected = currentTable.getSelectionModel().getSelectedItems();
+        String deleteSqlItemTemplate = "DELETE FROM ITEM WHERE ARTICLE = %S";
+        String deleteSqlTypeTemplate = "DELETE FROM %S WHERE ARTICLE = %S";
+        String article = "";
+        String type = "";
+        for(Object selectedObject: selected) {
+            if(currentTable == itemsTable) {
+                article = ((ItemData)selectedObject).getArticle();
+                type = ((ItemData)selectedObject).getType();
+                data.remove((ItemData)selectedObject);
+            } else if (currentTable == micTable) {
+                article = ((MicData)selectedObject).getArticle();
+                type = "micro";
+            } else if (currentTable == guitarTable) {
+                article = ((GuitarData)selectedObject).getArticle();
+                type = "guitar";
+                guitarData.remove((GuitarData)selectedObject);
+            } else if (currentTable == synthTable) {
+                article = ((SynthData)selectedObject).getArticle();
+                type = "synth";
+                synthData.remove((SynthData)selectedObject);
+            } else if (currentTable == musicTable) {
+                article = ((MusicData)selectedObject).getArticle();
+                type = "music";
+                musicData.remove((MusicData)selectedObject);
+            }
+            try {
+                Connection conn = dbConnection.getConnection();
+                System.out.println(String.format(deleteSqlTypeTemplate, type, article));
+                System.out.println(String.format(deleteSqlItemTemplate, article));
+                if(type != null && !type.equals("")) conn.createStatement().execute(String.format(deleteSqlTypeTemplate, type, article));
+                conn.createStatement().execute(String.format(deleteSqlItemTemplate, article));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+//        selected.get(0).
     }
 }
